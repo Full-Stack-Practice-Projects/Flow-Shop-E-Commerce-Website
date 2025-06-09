@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Lora } from "next/font/google";
+import Navbar from "./(components)/Navbar/Navbar";
 import "./globals.css";
 
 const lora = Lora({
@@ -21,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lora.className} antialiased`}>{children}</body>
+      <body className={`${lora.className} antialiased`}>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
