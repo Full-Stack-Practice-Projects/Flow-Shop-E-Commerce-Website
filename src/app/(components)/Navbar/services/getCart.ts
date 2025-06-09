@@ -13,7 +13,7 @@ export async function getCart() {
     const wixClient = getWixClient();
     return await wixClient.currentCart.getCurrentCart();
   } catch (error) {
-    console.error(error);
+    console.dir(error, { depth: null });
     const errorCode = (error as WixErrorType).details.applicationError.code;
     console.log({ errorCode });
     console.log(errorCode === "OWNED_CART_NOT_FOUND");
