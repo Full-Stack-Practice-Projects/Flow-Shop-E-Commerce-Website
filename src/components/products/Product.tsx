@@ -1,8 +1,8 @@
 import { products } from "@wix/stores";
 import Link from "next/link";
 import React from "react";
+import { Badge, DiscountBadge } from "../badge/index";
 import WixImage from "../WixImage/WixImage";
-import Badge from "../ui/badge";
 import { getFormattedPrice } from "./helpers/getFormmatedPrice";
 
 interface ProductProps {
@@ -19,7 +19,7 @@ export default function Product({ product }: ProductProps) {
    */
 
   return (
-    <Link href={`/products/${product.slug}`} className="h-full border">
+    <Link href={`/products/${product.slug}`} className="h-full border bg-card">
       <div className="relative overflow-hidden">
         <WixImage
           scaleToFill
@@ -31,6 +31,7 @@ export default function Product({ product }: ProductProps) {
         />
         <div className="absolute bottom-3 right-3 flex flex-wrap items-center gap-2">
           {product.ribbon && <Badge> {product.ribbon} </Badge>}
+          {product.discount && <DiscountBadge data={product.discount} />}
           <Badge className="bg-secondary font-semibold text-secondary-foreground">
             {getFormattedPrice(product)}{" "}
           </Badge>
