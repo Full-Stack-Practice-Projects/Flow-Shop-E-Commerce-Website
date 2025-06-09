@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Lora } from "next/font/google";
-import Navbar from "./(components)/Navbar/Navbar";
+import Navbar from "./(components)/navbar/Navbar";
 import "./globals.css";
 
 const lora = Lora({
