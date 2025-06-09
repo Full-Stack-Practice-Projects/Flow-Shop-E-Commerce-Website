@@ -1,9 +1,9 @@
 "use server";
 
 import logo from "@/assets/logo.png";
+import { getCart } from "@/wix-api/cart";
 import Image from "next/image";
 import Link from "next/link";
-import { getCart } from "./services/getCart";
 
 const INITIAL_QUANTITY = 0;
 

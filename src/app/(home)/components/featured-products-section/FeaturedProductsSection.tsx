@@ -1,11 +1,16 @@
 import Product from "@/components/products/Product";
-import { getFeaturedProducts } from "../services/homePageServices";
+import { getCollectionBySlug } from "@/wix-api/collections";
+import { queryProducts } from "@/wix-api/products";
 
 export default async function FeaturedProductsSection() {
-  const featuredProducts = await getFeaturedProducts();
-  if (!featuredProducts) {
+  const collection = await getCollectionBySlug("featured-products");
+  if (!collection?._id) {
     return null;
   }
+
+  const featuredProducts = await queryProducts({
+    collectionIds: collection._id,
+  });
 
   return (
     <section>
