@@ -10,3 +10,13 @@ export function delay(ms: number) {
     setTimeout(() => resolve, ms);
   });
 }
+
+export function formatCurrency(
+  price: number | string = 0,
+  currency: string = "USD",
+) {
+  return Intl.NumberFormat("en", {
+    style: "currency",
+    currency: currency,
+  }).format(Number(price));
+}
