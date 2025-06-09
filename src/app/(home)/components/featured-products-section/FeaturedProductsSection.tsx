@@ -18,6 +18,7 @@ export default async function FeaturedProductsSection() {
             );
           })}
         </div>
+        <pre>{JSON.stringify(featuredProducts, null, 2)}</pre>
       </div>
     </section>
   );
