@@ -3,6 +3,7 @@
 import { Badge } from "@/components/badge";
 import WixImage from "@/components/WixImage/WixImage";
 import { products } from "@wix/stores";
+import { useState } from "react";
 import ProductOptions from "./ProductOptions";
 
 interface ProductDetailsProps {
@@ -13,6 +14,25 @@ const MAIN_MEDIA_IMAGE_WIDTH = 1000;
 const MAIN_MEDIA_IMAGE_HEIGHT = 1000;
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
+  const [quantity, setQuantity] = useState<number>(1);
+
+  const initialOptions: Array<{ [optionName: string]: string }> =
+    product.productOptions?.map((option) => {
+      const optionName = option.name || "";
+      const optionDescription = option.choices?.[0].description || "";
+      return {
+        [optionName]: optionDescription,
+      };
+    }) || [];
+
+  const initialOptionsRecord =
+    initialOptions.reduce((acc, curr) => {
+      return { ...acc, ...curr };
+    }, {}) || {};
+
+  const [selectedOptions, setSelectedOptions] =
+    useState<Record<string, string>>(initialOptionsRecord);
+
   return (
     <div className="flex flex-col gap-10 md:flex-row lg:gap-20">
       <div className="basis-2/5">
@@ -40,7 +60,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             className="prose dark:prose-invert"
           />
         )}
-        <ProductOptions product={product} />
+        <ProductOptions
+          product={product}
+          selectedOptions={selectedOptions}
+          setSelectedOptions={setSelectedOptions}
+        />
+        {<>Selected options : {JSON.stringify(selectedOptions)}</>}
       </div>
     </div>
   );
