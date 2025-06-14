@@ -1,6 +1,7 @@
 import WixImage from "@/components/WixImage/WixImage";
 import { cn } from "@/lib/utils";
 import { products } from "@wix/stores";
+import { PlayIcon } from "lucide-react";
 import { getResolvedThumbnailUrl } from "../helpers/getResolvedThumbnailUrl";
 
 interface MediaPreviewProps {
@@ -49,6 +50,11 @@ function MediaPreview({
         height={MAX_MEDIA_HEIGHT}
         onMouseEnter={onSelect}
       />
+      {resolvedThumbnailUrl && (
+        <span className="absolute left-1/2 top-1/2 flex size-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/40">
+          <PlayIcon className="size-5 text-white/60" />
+        </span>
+      )}
     </div>
   );
 }
