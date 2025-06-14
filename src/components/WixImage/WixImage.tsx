@@ -1,5 +1,8 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
 import { media as wixMedia } from "@wix/sdk";
+import { useEffect, useState } from "react";
 import { ScaleToFillProps, WixImageProps } from "./types";
 
 const IMAGE_PLACE_HOLDER = "./../../../public/placeholder.png";
@@ -10,21 +13,24 @@ export default function WixImage({
   alt,
   ...props
 }: WixImageProps) {
-  let imageUrl;
+  const [imageUrl, setImageUrl] = useState(placeholder);
 
-  if (!mediaIdentifier) {
-    imageUrl = placeholder;
-  } else if (props.scaleToFill || props.scaleToFill === undefined) {
-    imageUrl = wixMedia.getScaledToFillImageUrl(
-      mediaIdentifier,
-      (props as ScaleToFillProps).width,
-      (props as ScaleToFillProps).height,
-      {},
-    );
-  } else {
-    imageUrl = wixMedia.getImageUrl(mediaIdentifier).url;
-  }
-
+  useEffect(() => {
+    if (!mediaIdentifier) {
+      setImageUrl(placeholder);
+    } else if (props.scaleToFill || props.scaleToFill === undefined) {
+      setImageUrl(
+        wixMedia.getScaledToFillImageUrl(
+          mediaIdentifier,
+          (props as ScaleToFillProps).width,
+          (props as ScaleToFillProps).height,
+          {},
+        ),
+      );
+    } else {
+      setImageUrl(wixMedia.getImageUrl(mediaIdentifier).url);
+    }
+  }, [mediaIdentifier, placeholder, props]);
   /**
    * We use here <img/> instead of nextImage.
    * NextImage it resizes the image for us (power compution when deploy it on server).
