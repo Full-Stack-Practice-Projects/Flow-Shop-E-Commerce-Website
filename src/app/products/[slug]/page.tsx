@@ -41,7 +41,6 @@ export async function generateMetadata({
 
 export default async function page({ params }: PageProps) {
   const { slug } = await params;
-
   const product = await getProductBySlug(slug);
 
   if (!product?._id) {
