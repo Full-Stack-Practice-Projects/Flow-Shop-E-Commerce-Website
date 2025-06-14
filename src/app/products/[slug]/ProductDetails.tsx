@@ -2,8 +2,10 @@
 
 import { Badge } from "@/components/badge";
 import WixImage from "@/components/WixImage/WixImage";
+import { checkInStock, findVariant } from "@/lib/utils";
 import { products } from "@wix/stores";
 import { useState } from "react";
+import { getInitialProductOptionsRecord } from "./helpers/helpers";
 import ProductOptions from "./ProductOptions";
 
 interface ProductDetailsProps {
@@ -16,22 +18,15 @@ const MAIN_MEDIA_IMAGE_HEIGHT = 1000;
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const [quantity, setQuantity] = useState<number>(1);
 
-  const initialOptions: Array<{ [optionName: string]: string }> =
-    product.productOptions?.map((option) => {
-      const optionName = option.name || "";
-      const optionDescription = option.choices?.[0].description || "";
-      return {
-        [optionName]: optionDescription,
-      };
-    }) || [];
+  const initialProductOptionsRecord = getInitialProductOptionsRecord(product);
 
-  const initialOptionsRecord =
-    initialOptions.reduce((acc, curr) => {
-      return { ...acc, ...curr };
-    }, {}) || {};
+  const [selectedOptions, setSelectedOptions] = useState<
+    Record<string, string>
+  >(initialProductOptionsRecord);
 
-  const [selectedOptions, setSelectedOptions] =
-    useState<Record<string, string>>(initialOptionsRecord);
+  const selectedVariant = findVariant(product, selectedOptions);
+
+  const isInStock = checkInStock(product, selectedOptions);
 
   return (
     <div className="flex flex-col gap-10 md:flex-row lg:gap-20">
@@ -66,6 +61,11 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           setSelectedOptions={setSelectedOptions}
         />
         {<>Selected options : {JSON.stringify(selectedOptions)}</>}
+        {
+          <>
+            {"\n"}Variant {JSON.stringify(selectedVariant?.choices)}
+          </>
+        }
       </div>
     </div>
   );

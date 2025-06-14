@@ -1,6 +1,7 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
+import { checkInStock, cn } from "@/lib/utils";
 import { products } from "@wix/stores";
 
 interface ProductOptionsProps {
@@ -47,7 +48,16 @@ export default function ProductOptions({
                     />
                     <Label
                       htmlFor={choice.description}
-                      className="flex min-w-14 cursor-pointer items-center justify-center gap-1.5 border p-2 peer-checked:border-primary"
+                      className={cn(
+                        "flex min-w-14 cursor-pointer items-center justify-center gap-1.5 border p-2 peer-checked:border-primary",
+                        // Check if the combintion of options not availlable in the stock
+                        !checkInStock(product, {
+                          // Currently selected options
+                          ...selectedOptions,
+                          // the options that this label belongs to
+                          [productOption.name || ""]: choice.description || "",
+                        }) && "opacity-50",
+                      )}
                     >
                       {productOption.optionType ===
                         products.OptionType.color && (
