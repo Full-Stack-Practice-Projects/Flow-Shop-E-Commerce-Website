@@ -88,12 +88,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           selectedOptions={selectedOptions}
           setSelectedOptions={setSelectedOptions}
         />
-        {<>Selected options : {JSON.stringify(selectedOptions)}</>}
-        {
-          <>
-            {"\n"}Variant {JSON.stringify(selectedVariant?.choices)}
-          </>
-        }
         <div className="space-y-1.5">
           <Label htmlFor="quantity">Quantity</Label>
           <div className="flex items-center gap-2.5">
