@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/badge";
+import AddToCartButton from "@/components/cart/AddToCartButton";
 import {
   Accordion,
   AccordionContent,
@@ -108,6 +109,15 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               )}
           </div>
         </div>
+        {isInStock ? (
+          <AddToCartButton
+            product={product}
+            selectedOptions={selectedOptions}
+            quantity={quantity}
+          />
+        ) : (
+          "Out of stock"
+        )}
         {!!product.additionalInfoSections?.length && (
           <div className="space-y-1.5 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
