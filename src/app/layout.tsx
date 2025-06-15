@@ -1,8 +1,10 @@
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Lora } from "next/font/google";
 import Footer from "./(components)/footer/Footer";
 import Navbar from "./(components)/navbar/Navbar";
 import "./globals.css";
+import ReactQueryProvider from "./ReactQueryProvider";
 
 const lora = Lora({
   subsets: ["latin"],
@@ -24,9 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lora.className} antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
+        <ReactQueryProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </ReactQueryProvider>
+        <Toaster />
       </body>
     </html>
   );
