@@ -18,8 +18,13 @@ export default function ProductMedia({ media }: ProductMediaProps) {
   const [selectedMedia, setSelectedMedia] = useState(media?.[0]);
 
   useEffect(() => {
-    console.log(`Selected media changed `, selectedMedia);
-  }, [selectedMedia]);
+    /**
+     * When we select a different options we still see something from prev selected options.
+     * We still have the old options in selectedMedia state.
+     * Therefore to solve this whenever the media change (we select a new option) setSelected media to first item of new choice.
+     */
+    setSelectedMedia(media?.[0]);
+  }, [media]);
 
   if (!media?.length) {
     return null;
