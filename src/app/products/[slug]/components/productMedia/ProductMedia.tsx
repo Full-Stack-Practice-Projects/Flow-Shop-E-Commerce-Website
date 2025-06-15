@@ -31,7 +31,7 @@ export default function ProductMedia({ media }: ProductMediaProps) {
   const selectedVideo = selectedMedia?.video?.files?.[0];
 
   return (
-    <div className="h-fit basis-2/5 space-y-5 md:sticky md:top-0">
+    <div className="h-fit basis-2/5 space-y-5 md:sticky md:top-10">
       <div className="aspect-square bg-secondary">
         {selectedImage?.url ? (
           <Zoom key={selectedImage.url}>

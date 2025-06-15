@@ -41,9 +41,31 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   const availableQuantityExceeded: boolean =
     !!availableQuantity && quantity > availableQuantity;
 
+  // media items of the currently selected options.
+  const selectedOptionsMedia = product.productOptions?.flatMap((option) => {
+    /**
+     * Dose the options with a description is in our selected options
+     */
+    const selectedChoice = option.choices?.find(
+      (choice) => choice.description === selectedOptions[option.name || ""],
+    );
+
+    return selectedChoice?.media?.items ?? [];
+  });
+
   return (
     <div className="flex flex-col gap-10 md:flex-row lg:gap-20">
-      <ProductMedia media={product.media?.items} />
+      {/**
+       * We do not always have different variance that have images attached to them.
+       * if we do not have fallback to all product media values : product.media?.items
+       */}
+      <ProductMedia
+        media={
+          !!selectedOptionsMedia?.length
+            ? selectedOptionsMedia
+            : product.media?.items
+        }
+      />
       <div className="basis-3/5 space-y-5">
         <div className="space-y-2.5">
           <h1 className="text-3xl font-bold lg:text-4xl">{product.name}</h1>
