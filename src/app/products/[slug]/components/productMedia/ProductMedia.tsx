@@ -3,6 +3,7 @@
 import WixImage from "@/components/WixImage/WixImage";
 import { products } from "@wix/stores";
 import { useEffect, useState } from "react";
+import Zoom from "react-medium-image-zoom";
 import MediaPreview from "./components/MediaPreview";
 
 interface ProductMediaProps {
@@ -30,16 +31,18 @@ export default function ProductMedia({ media }: ProductMediaProps) {
   const selectedVideo = selectedMedia?.video?.files?.[0];
 
   return (
-    <div className="basis-2/5 space-y-3">
+    <div className="h-fit basis-2/5 space-y-5 md:sticky md:top-0">
       <div className="aspect-square bg-secondary">
         {selectedImage?.url ? (
-          <WixImage
-            mediaIdentifier={selectedImage.url}
-            alt={selectedImage.altText}
-            width={MAIN_MEDIA_IMAGE_WIDTH}
-            height={MAIN_MEDIA_IMAGE_HEIGHT}
-            className="sticky top-0"
-          />
+          <Zoom key={selectedImage.url}>
+            <WixImage
+              mediaIdentifier={selectedImage.url}
+              alt={selectedImage.altText}
+              width={MAIN_MEDIA_IMAGE_WIDTH}
+              height={MAIN_MEDIA_IMAGE_HEIGHT}
+              className="sticky top-0"
+            />
+          </Zoom>
         ) : selectedVideo?.url ? (
           <div className="flex size-full items-center bg-black">
             <video controls className="size-full">
