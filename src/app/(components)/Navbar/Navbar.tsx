@@ -5,17 +5,10 @@ import { getWixServerClient } from "@/lib/wix-server.base";
 import { getCart } from "@/wix-api/cart";
 import Image from "next/image";
 import Link from "next/link";
-
-const INITIAL_QUANTITY = 0;
+import ShoppingCartButton from "./components/ShoppingCartButton";
 
 export default async function Navbar() {
   const cart = await getCart(await getWixServerClient());
-
-  const totalQuantity =
-    cart?.lineItems?.reduce((acc, item) => {
-      const itemQuantity = item.quantity || 0;
-      return acc + itemQuantity;
-    }, INITIAL_QUANTITY) || 0;
 
   return (
     <header className="bg-background shadow-sm">
@@ -24,7 +17,7 @@ export default async function Navbar() {
           <Image src={logo} alt="Flow Shop logo" width={40} height={40} />
           <span className="text-xl font-bold">Flow Shop</span>
         </Link>
-        {totalQuantity} items in your cart
+        <ShoppingCartButton initialData={cart} />
       </div>
     </header>
   );
