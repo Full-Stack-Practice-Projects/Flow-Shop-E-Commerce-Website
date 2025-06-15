@@ -1,9 +1,16 @@
 import { Tokens } from "@wix/sdk";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { WIX_SESSION_COOKIE } from "./constants";
 import { getWixClient } from "./wix-client.base";
 
-export async function getWixServerClient() {
+/**
+ * We cant create a many wix cllient as we want since it cheap operation.
+ * What we call also do we can wrap it with React.cache.
+ * So when we create a server client in same req in different components it will use the same one every time.
+ */
+
+export const getWixServerClient = cache(async () => {
   let tokens: Tokens | undefined;
 
   try {
@@ -15,7 +22,7 @@ export async function getWixServerClient() {
   }
 
   return getWixClient(tokens);
-}
+});
 
 /**
  * We cant do export const wixServerClient= getWixServerClient() and reuse it every where we need.
