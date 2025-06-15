@@ -1,9 +1,17 @@
 "use client";
 
 import { Badge } from "@/components/badge";
-import WixImage from "@/components/WixImage/WixImage";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { checkInStock, findVariant } from "@/lib/utils";
 import { products } from "@wix/stores";
+import { InfoIcon } from "lucide-react";
 import { useState } from "react";
 import ProductMedia from "./components/productMedia/ProductMedia";
 import { getInitialProductOptionsRecord } from "./helpers/helpers";
@@ -26,6 +34,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   const selectedVariant = findVariant(product, selectedOptions);
 
   const isInStock = checkInStock(product, selectedOptions);
+
+  const availableQuantity =
+    selectedVariant?.stock?.quantity ?? product.stock?.quantity;
+
+  const availableQuantityExceeded: boolean =
+    !!availableQuantity && quantity > availableQuantity;
 
   return (
     <div className="flex flex-col gap-10 md:flex-row lg:gap-20">
@@ -58,6 +72,54 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             {"\n"}Variant {JSON.stringify(selectedVariant?.choices)}
           </>
         }
+        <div className="space-y-1.5">
+          <Label htmlFor="quantity">Quantity</Label>
+          <div className="flex items-center gap-2.5">
+            <Input
+              id="quantity"
+              name="quantity"
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              className="w-24"
+              disabled={!isInStock}
+            />
+            {!!availableQuantity &&
+              (availableQuantityExceeded || availableQuantity < 10) && (
+                <span className="text-destructive">
+                  Only {availableQuantity} left in stock.
+                </span>
+              )}
+          </div>
+        </div>
+        {!!product.additionalInfoSections?.length && (
+          <div className="space-y-1.5 text-sm text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <InfoIcon className="size-5" />
+              <span>Additional product information</span>
+            </span>
+            <Accordion type="multiple">
+              {product.additionalInfoSections.map((section) => {
+                return (
+                  <AccordionItem
+                    key={section.title}
+                    value={section.title || ""}
+                  >
+                    <AccordionTrigger>{section.title}</AccordionTrigger>
+                    <AccordionContent>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: section.description || "",
+                        }}
+                        className="prose text-sm text-muted-foreground dark:prose-invert"
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          </div>
+        )}
       </div>
     </div>
   );
