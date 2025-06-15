@@ -1,6 +1,7 @@
 "use server";
 
 import logo from "@/assets/logo.png";
+import { getWixServerClient } from "@/lib/wix-server.base";
 import { getCart } from "@/wix-api/cart";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +9,7 @@ import Link from "next/link";
 const INITIAL_QUANTITY = 0;
 
 export default async function Navbar() {
-  const cart = await getCart();
+  const cart = await getCart(await getWixServerClient());
 
   const totalQuantity =
     cart?.lineItems?.reduce((acc, item) => {

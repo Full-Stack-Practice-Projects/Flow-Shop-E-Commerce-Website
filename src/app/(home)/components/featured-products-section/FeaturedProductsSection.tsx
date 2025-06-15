@@ -1,14 +1,17 @@
 import Product from "@/components/products/Product";
+import { getWixServerClient } from "@/lib/wix-server.base";
 import { getCollectionBySlug } from "@/wix-api/collections";
 import { queryProducts } from "@/wix-api/products";
 
 export default async function FeaturedProductsSection() {
-  const collection = await getCollectionBySlug("featured-products");
+  const wixClient = await getWixServerClient();
+
+  const collection = await getCollectionBySlug(wixClient, "featured-products");
   if (!collection?._id) {
     return null;
   }
 
-  const featuredProducts = await queryProducts({
+  const featuredProducts = await queryProducts(wixClient, {
     collectionIds: collection._id,
   });
 
