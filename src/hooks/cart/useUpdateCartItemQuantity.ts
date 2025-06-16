@@ -59,6 +59,11 @@ export function useUpdateCartItemQuantity() {
         description: "Somthing went wrong, Please try again.",
       });
     },
+    onSettled: () => {
+      /** runs after the request completes, whether it was successful (onSuccess) or it failed (onError) */
+      // This line tells the React Query fetch the data from the server again.
+      queryClient.invalidateQueries({ queryKey });
+    },
   });
 
   return updateCartItemQuantityMutation;
