@@ -1,6 +1,11 @@
 import { wixBrowserClient } from "@/lib/wix-browser.base";
 import { UpdateCartItemQuantity, updateCartItemQuantity } from "@/wix-api/cart";
-import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  MutationKey,
+  QueryKey,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { currentCart } from "@wix/ecom";
 import { toast } from "sonner";
 
@@ -9,7 +14,10 @@ export function useUpdateCartItemQuantity() {
 
   const queryKey: QueryKey = ["cart"];
 
+  const mutationKey: MutationKey = ["useUpdateCartItemQuantity"];
+
   const updateCartItemQuantityMutation = useMutation({
+    mutationKey: mutationKey,
     mutationFn: (values: UpdateCartItemQuantity) =>
       updateCartItemQuantity(wixBrowserClient, values),
     onMutate: async (values: UpdateCartItemQuantity) => {
@@ -61,8 +69,22 @@ export function useUpdateCartItemQuantity() {
     },
     onSettled: () => {
       /** runs after the request completes, whether it was successful (onSuccess) or it failed (onError) */
-      // This line tells the React Query fetch the data from the server again.
-      queryClient.invalidateQueries({ queryKey });
+
+      /*
+       * Check if mutating is in progress
+       * queryClient.isMutating(): returns a number how often this key is mutating at a moment.
+       * only if it mutating ones invalidate cache (tell react to update cache by fetching the fresh data).
+       * If there is multiple operation in progress we want to wait until there is one left before we invalidate query.
+       *
+       * */
+      if (queryClient.isMutating({ mutationKey }) === 1) {
+        // This line tells the React Query fetch the data from the server again.
+        queryClient.invalidateQueries({ queryKey });
+
+        /** Without these lines we might get a race condtion.
+         * Sometimes an older requests finishes later after newer request.
+         */
+      }
     },
   });
 
