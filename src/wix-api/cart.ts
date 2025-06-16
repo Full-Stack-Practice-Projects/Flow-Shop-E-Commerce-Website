@@ -13,10 +13,13 @@ type WixErrorType = {
 
 export async function getCart(wixClient: WixClient) {
   try {
-    return await wixClient.currentCart.getCurrentCart();
-  } catch (error) {
+    const cart = await wixClient.currentCart.getCurrentCart();
+    return cart;
+  } catch (error: unknown) {
+    console.log(`error !!! ----------->`);
     console.dir(error, { depth: null });
-    const errorCode = (error as WixErrorType).details.applicationError.code;
+
+    const errorCode = (error as WixErrorType)?.details?.applicationError?.code;
     console.log({ errorCode });
     console.log(errorCode === "OWNED_CART_NOT_FOUND");
     if (errorCode === "OWNED_CART_NOT_FOUND") {
@@ -27,7 +30,7 @@ export async function getCart(wixClient: WixClient) {
   }
 }
 
-interface AddToCartValues {
+export interface AddToCartValues {
   product: products.Product;
   selectedOptions: Record<string, string>;
   quantity: number;
