@@ -1,6 +1,7 @@
 import { WIX_STORES_APP_ID } from "@/lib/constants";
 import { findVariant } from "@/lib/utils";
 import { WixClient } from "@/lib/wix-client.base";
+import { currentCart } from "@wix/ecom";
 import { products } from "@wix/stores";
 
 type WixErrorType = {
@@ -13,7 +14,7 @@ type WixErrorType = {
 
 export async function getCart(wixClient: WixClient) {
   try {
-    const cart = await wixClient.currentCart.getCurrentCart();
+    const cart: currentCart.Cart = await wixClient.currentCart.getCurrentCart();
     return cart;
   } catch (error: unknown) {
     console.log(`error !!! ----------->`);
