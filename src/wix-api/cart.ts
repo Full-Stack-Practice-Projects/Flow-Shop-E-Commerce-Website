@@ -60,3 +60,21 @@ export async function addToCart(
     ],
   });
 }
+
+export interface UpdateCartItemQuantity {
+  productId: string;
+  newQuantity: number;
+}
+
+export async function updateCartItemQuantity(
+  wixClient: WixClient,
+  { productId, newQuantity }: UpdateCartItemQuantity,
+) {
+  const updatedCart = wixClient.currentCart.updateCurrentCartLineItemQuantity([
+    {
+      _id: productId,
+      quantity: newQuantity,
+    },
+  ]);
+  return updatedCart;
+}

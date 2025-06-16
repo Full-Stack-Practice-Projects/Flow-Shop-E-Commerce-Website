@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useCartQuery } from "@/hooks/cart/useQueryCart";
 import { currentCart } from "@wix/ecom";
 import { ShoppingCartIcon } from "lucide-react";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import CartSheet from "./cartSheet/CartSheet";
 
 interface ShoppingCartButtonProps {
@@ -16,10 +16,6 @@ export default function ShoppingCartButton({
   initialData,
 }: ShoppingCartButtonProps) {
   const [sheetOpen, setSheetOpen] = useState<boolean>(false);
-
-  const toggleSheetOpen = useCallback((value: boolean) => {
-    setSheetOpen(value);
-  }, []);
 
   const { data, isSuccess, isPending, isError, error } =
     useCartQuery(initialData);
@@ -51,7 +47,7 @@ export default function ShoppingCartButton({
       <CartSheet
         cart={cart}
         sheetOpen={sheetOpen}
-        toggleSheetOpen={toggleSheetOpen}
+        setSheetOpen={setSheetOpen}
         totalQuantity={totalQuantity}
       />
     </div>

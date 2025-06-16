@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import WixImage from "@/components/WixImage/WixImage";
+import { useUpdateCartItemQuantity } from "@/hooks/cart/useUpdateCartItemQuantity";
 import { currentCart } from "@wix/ecom";
 import Link from "next/link";
 
@@ -18,6 +19,14 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
 
   const hasDiscount =
     item.fullPrice && item.fullPrice.amount !== item.price?.amount;
+
+  const { mutate: updateCartItemQuantityMutate } = useUpdateCartItemQuantity();
+
+  const productId = item._id;
+
+  if (!productId) {
+    return null;
+  }
 
   return (
     <li className="flex items-center gap-3">
@@ -53,11 +62,31 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
           )}
         </div>
         <div className="flex items-center gap-1.5">
-          <Button variant="outline" size="sm" disabled={item.quantity === 1}>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={item.quantity === 1}
+            onClick={() =>
+              updateCartItemQuantityMutate({
+                productId,
+                newQuantity: !item.quantity ? 0 : item.quantity - 1,
+              })
+            }
+          >
             -
           </Button>
           <span>{item.quantity}</span>
-          <Button variant="outline" size="sm" disabled={quantityLimitReached}>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={quantityLimitReached}
+            onClick={() =>
+              updateCartItemQuantityMutate({
+                productId,
+                newQuantity: !item.quantity ? 0 : item.quantity + 1,
+              })
+            }
+          >
             +
           </Button>
           {quantityLimitReached && (

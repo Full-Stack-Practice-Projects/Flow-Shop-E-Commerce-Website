@@ -20,21 +20,21 @@ interface CartSheet {
 
 interface CartSheetProps {
   sheetOpen: boolean;
-  toggleSheetOpen: (value: boolean) => void;
+  setSheetOpen: (value: boolean) => void;
   totalQuantity: number;
   cart: CartSheet;
 }
 
 export default function CartSheet({
   sheetOpen,
-  toggleSheetOpen,
+  setSheetOpen,
   totalQuantity,
   cart,
 }: CartSheetProps) {
   const { isPending, cartData, isError, error, isSuccess } = cart;
 
   return (
-    <Sheet open={sheetOpen} onOpenChange={toggleSheetOpen}>
+    <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
       <SheetContent className="flex flex-col p-5 sm:max-w-lg">
         <SheetHeader className="p-5">
           <SheetTitle>
@@ -59,7 +59,7 @@ export default function CartSheet({
                 <Link
                   href={``}
                   className="text-primary hover:underline"
-                  onClick={() => toggleSheetOpen(false)}
+                  onClick={() => setSheetOpen(false)}
                 >
                   Start shopping now
                 </Link>
