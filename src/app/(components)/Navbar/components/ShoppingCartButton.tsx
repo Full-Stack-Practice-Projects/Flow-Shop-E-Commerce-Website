@@ -17,7 +17,7 @@ export default function ShoppingCartButton({
 }: ShoppingCartButtonProps) {
   const [sheetOpen, setSheetOpen] = useState<boolean>(false);
 
-  const { data, isSuccess, isPending, isError, error } =
+  const { data, isSuccess, isPending, isFetching, isError, error } =
     useCartQuery(initialData);
 
   const cart = useMemo(() => {
@@ -27,8 +27,9 @@ export default function ShoppingCartButton({
       isPending,
       error,
       isError,
+      isFetching,
     };
-  }, [data, isSuccess, isPending, error, isError]);
+  }, [data, isSuccess, isPending, isFetching, error, isError]);
 
   const totalQuantity =
     data?.lineItems?.reduce((acc, item) => {

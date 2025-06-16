@@ -14,6 +14,7 @@ interface CartSheet {
   cartData: currentCart.Cart | null;
   isSuccess: boolean;
   isPending: boolean;
+  isFetching: boolean;
   error: Error | null;
   isError: boolean;
 }
@@ -31,7 +32,7 @@ export default function CartSheet({
   totalQuantity,
   cart,
 }: CartSheetProps) {
-  const { isPending, cartData, isError, error, isSuccess } = cart;
+  const { isPending, cartData, isFetching, isError, error, isSuccess } = cart;
 
   return (
     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -76,7 +77,10 @@ export default function CartSheet({
               Shipping and taxes calculated at checkout
             </p>
           </div>
-          <Button size="lg">Checkout</Button>
+          {/** Disable button if it currently updating or fetching data */}
+          <Button size="lg" disabled={!totalQuantity || isFetching}>
+            Checkout
+          </Button>
         </div>
       </SheetContent>
     </Sheet>
