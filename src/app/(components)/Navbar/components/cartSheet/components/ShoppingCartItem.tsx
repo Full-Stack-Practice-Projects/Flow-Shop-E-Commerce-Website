@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import WixImage from "@/components/WixImage/WixImage";
 import { currentCart } from "@wix/ecom";
 import Link from "next/link";
@@ -14,6 +15,9 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
     !!item.quantity &&
     !!item.availability?.quantityAvailable &&
     item.quantity >= item.availability.quantityAvailable;
+
+  const hasDiscount =
+    item.fullPrice && item.fullPrice.amount !== item.price?.amount;
 
   return (
     <li className="flex items-center gap-3">
@@ -42,6 +46,23 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
         )}
         <div className="flex items-center gap-2">
           {item.quantity} x {item.price?.formattedConvertedAmount}
+          {hasDiscount && (
+            <span className="text-muted-foreground line-through">
+              {item.price?.formattedConvertedAmount}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Button variant="outline" size="sm" disabled={item.quantity === 1}>
+            -
+          </Button>
+          <span>{item.quantity}</span>
+          <Button variant="outline" size="sm" disabled={quantityLimitReached}>
+            +
+          </Button>
+          {quantityLimitReached && (
+            <span className="text-destructive">Quantity Limit Reached</span>
+          )}
         </div>
       </div>
     </li>

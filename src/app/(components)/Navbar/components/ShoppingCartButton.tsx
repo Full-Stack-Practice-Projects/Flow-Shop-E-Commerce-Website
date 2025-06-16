@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useCartQuery } from "@/hooks/cart/useQueryCart";
 import { currentCart } from "@wix/ecom";
 import { ShoppingCartIcon } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import CartSheet from "./cartSheet/CartSheet";
 
 interface ShoppingCartButtonProps {
@@ -21,10 +21,21 @@ export default function ShoppingCartButton({
     setSheetOpen(value);
   }, []);
 
-  const { data: cartData } = useCartQuery(initialData);
+  const { data, isSuccess, isPending, isError, error } =
+    useCartQuery(initialData);
+
+  const cart = useMemo(() => {
+    return {
+      cartData: data,
+      isSuccess,
+      isPending,
+      error,
+      isError,
+    };
+  }, [data, isSuccess, isPending, error, isError]);
 
   const totalQuantity =
-    cartData?.lineItems?.reduce((acc, item) => {
+    data?.lineItems?.reduce((acc, item) => {
       const itemQuantity = item.quantity || 0;
       return acc + itemQuantity;
     }, INITIAL_QUANTITY) || 0;
@@ -38,7 +49,7 @@ export default function ShoppingCartButton({
         </span>
       </Button>
       <CartSheet
-        cartData={cartData}
+        cart={cart}
         sheetOpen={sheetOpen}
         toggleSheetOpen={toggleSheetOpen}
         totalQuantity={totalQuantity}

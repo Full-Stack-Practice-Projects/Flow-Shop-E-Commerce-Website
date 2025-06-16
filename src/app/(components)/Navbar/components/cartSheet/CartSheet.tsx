@@ -6,21 +6,33 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { currentCart } from "@wix/ecom";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import ShoppingCartItem from "./components/ShoppingCartItem";
+
+interface CartSheet {
+  cartData: currentCart.Cart | null;
+  isSuccess: boolean;
+  isPending: boolean;
+  error: Error | null;
+  isError: boolean;
+}
 
 interface CartSheetProps {
   sheetOpen: boolean;
   toggleSheetOpen: (value: boolean) => void;
   totalQuantity: number;
-  cartData: currentCart.Cart | null;
+  cart: CartSheet;
 }
 
 export default function CartSheet({
   sheetOpen,
   toggleSheetOpen,
   totalQuantity,
-  cartData,
+  cart,
 }: CartSheetProps) {
+  const { isPending, cartData, isError, error, isSuccess } = cart;
+
   return (
     <Sheet open={sheetOpen} onOpenChange={toggleSheetOpen}>
       <SheetContent className="flex flex-col p-5 sm:max-w-lg">
@@ -38,6 +50,22 @@ export default function CartSheet({
               return <ShoppingCartItem key={item._id} item={item} />;
             })}
           </ul>
+          {isPending && <Loader2 className="mx-auto animate-spin" />}
+          {isError && <p className="">{error?.message}</p>}
+          {isSuccess && !cartData?.lineItems?.length && (
+            <div className="flex items-center justify-center text-center">
+              <div className="space-y-1.5">
+                <p className="text-lg font-semibold"> Your cart is empty</p>
+                <Link
+                  href={``}
+                  className="text-primary hover:underline"
+                  onClick={() => toggleSheetOpen(false)}
+                >
+                  Start shopping now
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-between gap-5">
           <div className="space-y-0.5">
