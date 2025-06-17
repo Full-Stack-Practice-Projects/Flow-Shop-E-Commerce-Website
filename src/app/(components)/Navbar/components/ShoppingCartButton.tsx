@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useCartQuery } from "@/hooks/cart/useQueryCart";
+import { useCartQuery } from "@/hooks/cart/useCartQuery";
 import { currentCart } from "@wix/ecom";
 import { ShoppingCartIcon } from "lucide-react";
 import { useMemo, useState } from "react";

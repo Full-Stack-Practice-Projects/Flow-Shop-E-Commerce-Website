@@ -78,3 +78,10 @@ export async function updateCartItemQuantity(
   ]);
   return updatedCart;
 }
+
+export async function removeCartItem(wixClient: WixClient, productId: string) {
+  const updatedCart = wixClient.currentCart.removeLineItemsFromCurrentCart([
+    productId,
+  ]);
+  return updatedCart;
+}

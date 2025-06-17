@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import WixImage from "@/components/WixImage/WixImage";
-import { useUpdateCartItemQuantity } from "@/hooks/cart/useUpdateCartItemQuantity";
+import { useUpdateCartItemQuantityMutationMutation } from "@/hooks/cart/useUpdateCartItemQuantityMutation";
 import { currentCart } from "@wix/ecom";
 import Link from "next/link";
 
@@ -20,7 +20,8 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
   const hasDiscount =
     item.fullPrice && item.fullPrice.amount !== item.price?.amount;
 
-  const { mutate: updateCartItemQuantityMutate } = useUpdateCartItemQuantity();
+  const { mutate: updateCartItemQuantityMutate } =
+    useUpdateCartItemQuantityMutationMutation();
 
   const productId = item._id;
 

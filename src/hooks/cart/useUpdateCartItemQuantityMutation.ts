@@ -9,12 +9,12 @@ import {
 import { currentCart } from "@wix/ecom";
 import { toast } from "sonner";
 
-export function useUpdateCartItemQuantity() {
+export function useUpdateCartItemQuantityMutationMutation() {
   const queryClient = useQueryClient();
 
   const queryKey: QueryKey = ["cart"];
 
-  const mutationKey: MutationKey = ["useUpdateCartItemQuantity"];
+  const mutationKey: MutationKey = ["useUpdateCartItemQuantityMutation"];
 
   const updateCartItemQuantityMutation = useMutation({
     mutationKey: mutationKey,
