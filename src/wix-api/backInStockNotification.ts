@@ -3,7 +3,7 @@ import { findVariant } from "@/lib/utils";
 import { WixClient } from "@/lib/wix-client.base";
 import { products } from "@wix/stores";
 
-export interface CreateBackInStockNotificationRequestValues {
+export interface BackInStockNotificationRequestValues {
   email: string;
   itemUrl: string;
   product: products.Product;
@@ -17,7 +17,7 @@ export async function createBackInStockNotificationRequest(
     itemUrl,
     product,
     selectedOptions,
-  }: CreateBackInStockNotificationRequestValues,
+  }: BackInStockNotificationRequestValues,
 ) {
   const selectedVariant = findVariant(product, selectedOptions);
 
