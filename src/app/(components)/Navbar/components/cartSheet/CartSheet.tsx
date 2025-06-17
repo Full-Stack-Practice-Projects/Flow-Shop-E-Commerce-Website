@@ -48,7 +48,13 @@ export default function CartSheet({
         <div className="flex grow flex-col space-y-5 overflow-y-auto pt-1">
           <ul className="space-y-5">
             {cartData?.lineItems?.map((item) => {
-              return <ShoppingCartItem key={item._id} item={item} />;
+              return (
+                <ShoppingCartItem
+                  key={item._id}
+                  item={item}
+                  onProductLinkClicked={() => setSheetOpen(false)}
+                />
+              );
             })}
           </ul>
           {isPending && <Loader2 className="mx-auto animate-spin" />}
@@ -68,6 +74,7 @@ export default function CartSheet({
             </div>
           )}
         </div>
+        <hr />
         <div className="flex items-center justify-between gap-5">
           <div className="space-y-0.5">
             <p className="text-sm">Subtotal amount:</p>

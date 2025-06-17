@@ -8,9 +8,13 @@ import Link from "next/link";
 
 interface ShoppingCartItemProps {
   item: currentCart.LineItem;
+  onProductLinkClicked: () => void;
 }
 
-export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
+export default function ShoppingCartItem({
+  item,
+  onProductLinkClicked,
+}: ShoppingCartItemProps) {
   const itemUrlParts = item.url?.split("/");
   const slug = itemUrlParts?.pop();
 
@@ -36,7 +40,7 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
   return (
     <li className="flex items-center gap-3">
       <div className="relative size-fit flex-none">
-        <Link href={`/products/${slug}`}>
+        <Link href={`/products/${slug}`} onClick={onProductLinkClicked}>
           <WixImage
             mediaIdentifier={item.image}
             width={110}
@@ -53,7 +57,7 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
         </button>
       </div>
       <div className="space-y-1.5 text-sm">
-        <Link href={`/products/${slug}`}>
+        <Link href={`/products/${slug}`} onClick={onProductLinkClicked}>
           <p className="font-bold">{item.productName?.translated || "Item"}</p>
         </Link>
         {!!item.descriptionLines?.length && (
