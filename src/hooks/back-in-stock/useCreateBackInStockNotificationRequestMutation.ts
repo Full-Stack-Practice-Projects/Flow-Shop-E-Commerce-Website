@@ -29,7 +29,7 @@ export function useCreateBackInStockNotificationRequestMutation() {
           description: "You are already subscribed to this product.",
         });
       } else {
-        toast.error("Something went ", {
+        toast.error("Something went wrong", {
           description: "Something went wrong. Please try again.",
         });
       }

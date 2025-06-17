@@ -14,6 +14,9 @@ export async function generateOAuthData(
    * orginalUri: where we are coming from, and wanaa (where we will handle auth after we get redirected from the wix login page.)
    * redirectUri : where we wanna to redirect
    */
+
+  /** For ex if you are in product details page so you can to login and then redirect to the same page that you explored. */
+
   const oauthData = wixClient.auth.generateOAuthData(
     `${env.NEXT_PUBLIC_BASE_URL}/api/auth/callback/wix`,
     `${env.NEXT_PUBLIC_BASE_URL}/${originPath || ""}`,
