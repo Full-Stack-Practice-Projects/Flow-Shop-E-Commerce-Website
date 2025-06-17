@@ -17,7 +17,7 @@ export default function CompanyLinks() {
 
   return (
     <>
-      <LinkSection title="Company" links={companyLinks} />
+      <LinkSection title="Flow Shop" links={companyLinks} />
       <LinkSection title="Help" links={helpLinks} />
     </>
   );
