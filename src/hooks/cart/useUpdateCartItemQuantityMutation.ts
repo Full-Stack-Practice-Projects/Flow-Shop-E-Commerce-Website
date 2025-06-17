@@ -82,7 +82,7 @@ export function useUpdateCartItemQuantityMutationMutation() {
         queryClient.invalidateQueries({ queryKey });
 
         /** Without these lines we might get a race condtion.
-         * Sometimes an older requests finishes later after newer request.
+         * Sometimes an older requests finishes later after newer request (for total quantity..)
          */
       }
     },
