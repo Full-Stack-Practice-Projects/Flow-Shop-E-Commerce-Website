@@ -45,7 +45,7 @@ export default function CartSheet({
             </span>
           </SheetTitle>
         </SheetHeader>
-        <div className="flex grow flex-col space-y-5 overflow-y-auto">
+        <div className="flex grow flex-col space-y-5 overflow-y-auto pt-1">
           <ul className="space-y-5">
             {cartData?.lineItems?.map((item) => {
               return <ShoppingCartItem key={item._id} item={item} />;
@@ -70,7 +70,7 @@ export default function CartSheet({
         </div>
         <div className="flex items-center justify-between gap-5">
           <div className="space-y-0.5">
-            <p className="text-sm">Subtotal amount</p>
+            <p className="text-sm">Subtotal amount:</p>
             {/* @ts-expect-error: subtotal exists in the API response but is missing from the Wix SDK types */}
             <p className="font-bold">{cartData?.subtotal?.formattedAmount}</p>
             <p className="text-xs text-muted-foreground">

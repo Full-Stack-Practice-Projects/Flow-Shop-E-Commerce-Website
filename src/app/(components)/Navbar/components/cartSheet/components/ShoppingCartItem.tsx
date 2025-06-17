@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import WixImage from "@/components/WixImage/WixImage";
+import { useRemoveCartItemMutation } from "@/hooks/cart/useRemoveCartItemMutation";
 import { useUpdateCartItemQuantityMutationMutation } from "@/hooks/cart/useUpdateCartItemQuantityMutation";
 import { currentCart } from "@wix/ecom";
+import { X } from "lucide-react";
 import Link from "next/link";
 
 interface ShoppingCartItemProps {
@@ -23,6 +25,8 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
   const { mutate: updateCartItemQuantityMutate } =
     useUpdateCartItemQuantityMutationMutation();
 
+  const { mutate: removeCartItemMutate } = useRemoveCartItemMutation();
+
   const productId = item._id;
 
   if (!productId) {
@@ -31,15 +35,23 @@ export default function ShoppingCartItem({ item }: ShoppingCartItemProps) {
 
   return (
     <li className="flex items-center gap-3">
-      <Link href={`/products/${slug}`}>
-        <WixImage
-          mediaIdentifier={item.image}
-          width={110}
-          height={110}
-          alt={item.productName?.translated || "Product image"}
-          className="flex-none bg-secondary"
-        />
-      </Link>
+      <div className="relative size-fit flex-none">
+        <Link href={`/products/${slug}`}>
+          <WixImage
+            mediaIdentifier={item.image}
+            width={110}
+            height={110}
+            alt={item.productName?.translated || "Product image"}
+            className="flex-none bg-secondary"
+          />
+        </Link>
+        <button
+          className="absolute -right-1 -top-1 rounded-full border bg-background p-0.5"
+          onClick={() => removeCartItemMutate(productId)}
+        >
+          <X className="size-3" />
+        </button>
+      </div>
       <div className="space-y-1.5 text-sm">
         <Link href={`/products/${slug}`}>
           <p className="font-bold">{item.productName?.translated || "Item"}</p>
