@@ -1,5 +1,6 @@
 "use client";
 
+import BackInStockNotificationButton from "@/components/back-in-stock/BackInStockNotificationButton";
 import { Badge } from "@/components/badge";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import {
@@ -118,7 +119,11 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             className="w-full"
           />
         ) : (
-          "Out of stock"
+          <BackInStockNotificationButton
+            product={product}
+            selectedOptions={selectedOptions}
+            className="w-full"
+          />
         )}
         {!!product.additionalInfoSections?.length && (
           <div className="space-y-1.5 text-sm text-muted-foreground">
