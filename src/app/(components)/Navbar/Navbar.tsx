@@ -1,14 +1,25 @@
 "use server";
 
 import logo from "@/assets/logo.png";
+import UserButton from "@/components/user/userButton/UserButton";
 import { getWixServerClient } from "@/lib/wix-server.base";
 import { getCart } from "@/wix-api/cart";
+import { getLoggedInMemebers } from "@/wix-api/members";
 import Image from "next/image";
 import Link from "next/link";
 import ShoppingCartButton from "./components/ShoppingCartButton";
 
 export default async function Navbar() {
-  const cart = await getCart(await getWixServerClient());
+  /**
+   * Execute multiple process in parallel that dose not depend on each others
+   */
+
+  const wixServerClient = await getWixServerClient();
+
+  const [cart, loggedInMemeber] = await Promise.all([
+    getCart(wixServerClient),
+    getLoggedInMemebers(wixServerClient),
+  ]);
 
   return (
     <header className="bg-background shadow-sm">
@@ -17,7 +28,10 @@ export default async function Navbar() {
           <Image src={logo} alt="Flow Shop logo" width={40} height={40} />
           <span className="text-xl font-bold">Flow Shop</span>
         </Link>
-        <ShoppingCartButton initialData={cart} />
+        <div className="flex items-center justify-center gap-5">
+          <UserButton loggedInMemeber={loggedInMemeber} />
+          <ShoppingCartButton initialData={cart} />
+        </div>
       </div>
     </header>
   );
