@@ -8,6 +8,7 @@ import CollectionProductsLoadingSkeleton from "./(components)/CollectionProducts
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 export async function generateMetadata({
@@ -35,8 +36,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function page({ params }: PageProps) {
+export default async function page({ params, searchParams }: PageProps) {
   const { slug } = await params;
+  const { page = "1" } = await searchParams;
 
   const collection = await getCollectionBySlug(
     await getWixServerClient(),
@@ -50,8 +52,12 @@ export default async function page({ params }: PageProps) {
   return (
     <div className="space-y-5">
       <h2 className="text-2xl font-bold">Products</h2>
-      <Suspense fallback={<CollectionProductsLoadingSkeleton />}>
-        <CollectionProducts collectionId={collection._id} />
+      {/** Whenever the page changes show a suspunse boundary */}
+      <Suspense fallback={<CollectionProductsLoadingSkeleton />} key={page}>
+        <CollectionProducts
+          collectionId={collection._id}
+          page={parseInt(page)}
+        />
       </Suspense>
     </div>
   );
