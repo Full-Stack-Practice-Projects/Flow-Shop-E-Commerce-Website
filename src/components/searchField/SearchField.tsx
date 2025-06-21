@@ -19,7 +19,7 @@ export default function SearchField({ className }: SearchFieldProps) {
     if (!q) {
       return;
     }
-    router.push(`q?${encodeURIComponent(q)}`);
+    router.push(`/shop?q=${encodeURIComponent(q)}`);
   }
 
   /**
