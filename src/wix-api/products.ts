@@ -4,6 +4,7 @@ import { cache } from "react";
 type ProductsSort = "last_updated" | "price_asc" | "price_desc";
 
 interface QueryProductsFilters {
+  q?: string;
   collectionIds?: string[] | string;
   sort?: ProductsSort;
   skip?: number;
@@ -12,9 +13,23 @@ interface QueryProductsFilters {
 
 export async function queryProducts(
   wixClient: WixClient,
-  { collectionIds, sort = "last_updated", skip, limit }: QueryProductsFilters,
+  {
+    collectionIds,
+    sort = "last_updated",
+    skip,
+    limit,
+    q,
+  }: QueryProductsFilters,
 ) {
   let query = wixClient.products.queryProducts();
+
+  if (q) {
+    /**
+     * We can now check if a products start with a certian name.
+     * We cant search  in the middle of the name (WIX API Limitation).
+     */
+    query = query.startsWith("name", q);
+  }
 
   const collectionIdsArray = collectionIds
     ? Array.isArray(collectionIds)
