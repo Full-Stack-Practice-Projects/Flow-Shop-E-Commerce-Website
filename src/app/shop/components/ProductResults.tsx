@@ -7,9 +7,14 @@ import { notFound } from "next/navigation";
 interface ProductResultsProps {
   q?: string;
   page: number;
+  collectionIds?: string[];
 }
 
-export default async function ProductResults({ q, page }: ProductResultsProps) {
+export default async function ProductResults({
+  q,
+  page,
+  collectionIds,
+}: ProductResultsProps) {
   const pageSize = 12;
 
   const wixServerClient = await getWixServerClient();
@@ -18,6 +23,7 @@ export default async function ProductResults({ q, page }: ProductResultsProps) {
     q,
     limit: pageSize,
     skip: (page - 1) * pageSize,
+    collectionIds,
   });
 
   if (page > (products.totalPages || 1)) {

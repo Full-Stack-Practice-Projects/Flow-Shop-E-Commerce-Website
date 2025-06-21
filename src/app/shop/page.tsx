@@ -7,6 +7,7 @@ interface PageProps {
   searchParams: Promise<{
     q?: string;
     page?: string;
+    collection: string[];
   }>;
 }
 
@@ -21,7 +22,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const { q, page = "1" } = await searchParams;
+  const { q, collection: collectionIds, page = "1" } = await searchParams;
   const title = q ? `Results for ${q}` : `Products`;
 
   return (
@@ -32,7 +33,11 @@ export default async function Page({ searchParams }: PageProps) {
         fallback={<ProductResultsLoadingSkeleton />}
         key={`${q}-${page}`}
       >
-        <ProductResults page={parseInt(page)} q={q} />
+        <ProductResults
+          collectionIds={collectionIds}
+          page={parseInt(page)}
+          q={q}
+        />
       </Suspense>
     </div>
   );
