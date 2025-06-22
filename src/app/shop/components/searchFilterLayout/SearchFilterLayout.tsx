@@ -57,21 +57,23 @@ export default function SearchFilterLayout({
     * So it will make render when it is pending and another one when its success.
     * When its pending we can use the flag to display loader or something..
      */
-    setOptimisticCollectionIds(collectionIds);
 
     startTransition(() => {
-      /*
-      if we setOptimisticCollectionIds here : 
-        both your optimistic update and the navigation would be kicked off at low priority — i.e. your checkmark might not appear until after React has started processing the navigation. the user would feel a lag between clicking the checkbox and seeing it checked.
+      /**
+       * React treats optimistic updates as transitions, meaning they should be scheduled with low priority.
+       * useOptimistic updates must be inside startTransition so React can handle them as non-blocking, deferred updates and keep your UI responsive (non blocking)
        */
-
+      setOptimisticCollectionIds(collectionIds);
       router.push(`?${newSearchParams.toString()}`);
     });
   }
 
   return (
-    <main className="flex flex-col items-center justify-center gap-10 px-5 py-10 lg:flex-row lg:items-start">
-      <aside className="h-fit space-y-5 lg:sticky lg:top-10 lg:w-64">
+    <main className="group flex flex-col items-center justify-center gap-10 px-5 py-10 lg:flex-row lg:items-start">
+      <aside
+        className="h-fit space-y-5 lg:sticky lg:top-10 lg:w-64"
+        data-pending={isPending ? "" : undefined}
+      >
         <CollectionsFilter
           collections={collections}
           selectedCollectionIds={optimisticCollectionIds}

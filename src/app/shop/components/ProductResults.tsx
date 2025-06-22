@@ -31,7 +31,7 @@ export default async function ProductResults({
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 group-has-[[data-pending]]:animate-pulse">
       <p className="text-center text-xl">
         {products.totalCount}
         {"  "}
