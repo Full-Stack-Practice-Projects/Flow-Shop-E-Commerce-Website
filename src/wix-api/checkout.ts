@@ -22,5 +22,9 @@ export async function getCheckoutUrlForCurrentCart(wixClient: WixClient) {
     throw Error("Failed to create redirect session.");
   }
 
+  if (!redirectSession.fullUrl) {
+    throw Error("No fullUrl for this redirect session.");
+  }
+
   return redirectSession.fullUrl;
 }
