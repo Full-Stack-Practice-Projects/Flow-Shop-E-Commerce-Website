@@ -1,18 +1,39 @@
 import { WixClient } from "@/lib/wix-client.base";
 import { cache } from "react";
 
-type ProductsSort = "last_updated" | "price_asc" | "price_desc";
+export type ProductsSort = "last_updated" | "price_asc" | "price_desc";
 
-interface QueryProductsProps {
+interface QueryProductsFilters {
+  q?: string;
   collectionIds?: string[] | string;
   sort?: ProductsSort;
+  priceMin?: number;
+  priceMax?: number;
+  skip?: number;
+  limit?: number;
 }
 
 export async function queryProducts(
   wixClient: WixClient,
-  { collectionIds, sort = "last_updated" }: QueryProductsProps,
+  {
+    collectionIds,
+    sort = "last_updated",
+    priceMin,
+    priceMax,
+    skip,
+    limit,
+    q,
+  }: QueryProductsFilters,
 ) {
   let query = wixClient.products.queryProducts();
+
+  if (q) {
+    /**
+     * We can now check if a products start with a certian name.
+     * We cant search  in the middle of the name (WIX API Limitation).
+     */
+    query = query.startsWith("name", q);
+  }
 
   const collectionIdsArray = collectionIds
     ? Array.isArray(collectionIds)
@@ -34,6 +55,22 @@ export async function queryProducts(
     case "last_updated":
       query = query.descending("lastUpdated");
       break;
+  }
+
+  if (priceMin) {
+    query = query.ge("priceData.price", priceMin);
+  }
+
+  if (priceMax) {
+    query = query.le("priceData.price", priceMax);
+  }
+
+  if (limit) {
+    query = query.limit(limit);
+  }
+
+  if (skip) {
+    query = query.skip(skip);
   }
 
   return query.find();
