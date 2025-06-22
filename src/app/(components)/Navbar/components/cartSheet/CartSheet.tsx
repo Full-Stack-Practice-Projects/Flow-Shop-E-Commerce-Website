@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import CheckoutButton from "@/components/buttons/CheckoutButton";
 import {
   Sheet,
   SheetContent,
@@ -85,9 +85,7 @@ export default function CartSheet({
             </p>
           </div>
           {/** Disable button if it currently updating or fetching data */}
-          <Button size="lg" disabled={!totalQuantity || isFetching}>
-            Checkout
-          </Button>
+          <CheckoutButton size="lg" disabled={!totalQuantity || isFetching} />
         </div>
       </SheetContent>
     </Sheet>
