@@ -40,7 +40,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function page({ params }: PageProps) {
+export default async function Page({ params }: PageProps) {
   const { slug } = await params;
   const product = await getProductBySlug(await getWixServerClient(), slug);
 

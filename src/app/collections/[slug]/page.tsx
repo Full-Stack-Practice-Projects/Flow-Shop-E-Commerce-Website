@@ -36,7 +36,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function page({ params, searchParams }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   const { slug } = await params;
   const { page = "1" } = await searchParams;
 
