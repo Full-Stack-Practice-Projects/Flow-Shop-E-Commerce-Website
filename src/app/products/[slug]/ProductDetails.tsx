@@ -61,13 +61,16 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
        * We do not always have different variance that have images attached to them.
        * if we do not have fallback to all product media values : product.media?.items
        */}
-      <ProductMedia
-        media={
-          !!selectedOptionsMedia?.length
-            ? selectedOptionsMedia
-            : product.media?.items
-        }
-      />
+
+      <div className="basis-2/5">
+        <ProductMedia
+          media={
+            !!selectedOptionsMedia?.length
+              ? selectedOptionsMedia
+              : product.media?.items
+          }
+        />
+      </div>
       <div className="basis-3/5 space-y-5">
         <div className="space-y-2.5">
           <h1 className="text-3xl font-bold lg:text-4xl">{product.name}</h1>

@@ -45,7 +45,7 @@ export default function ProductMedia({ media }: ProductMediaProps) {
               alt={selectedImage.altText}
               width={MAIN_MEDIA_IMAGE_WIDTH}
               height={MAIN_MEDIA_IMAGE_HEIGHT}
-              className="sticky top-0"
+              className="sticky top-0 h-full w-full object-cover"
             />
           </Zoom>
         ) : selectedVideo?.url ? (
