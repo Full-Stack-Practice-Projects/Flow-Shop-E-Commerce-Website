@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useOptimistic, useTransition } from "react";
 import CollectionsFilter from "./components/CollectionsFilter";
 import PriceFilter from "./components/PriceFilter";
+import SortFilter from "./components/SortFilter";
 
 interface SearchFilterLayoutProps {
   collections: collections.Collection[];
@@ -29,6 +30,7 @@ export default function SearchFilterLayout({
     collection: searchParams.getAll("collection"),
     price_min: searchParams.get("price_min") || undefined,
     price_max: searchParams.get("price_max") || undefined,
+    sort: searchParams.get("sort") || undefined,
   });
 
   const [isPending, startTransition] = useTransition();
@@ -116,7 +118,12 @@ export default function SearchFilterLayout({
         />
       </aside>
       <div className="w-full max-w-7xl space-y-5">
-        <div className="flex justify-center lg:justify-end">Sort filtter</div>
+        <div className="flex justify-center lg:justify-end">
+          <SortFilter
+            sort={optimisticFilters.sort}
+            updateSort={(sort) => updateFilters({ sort })}
+          />
+        </div>
         {children}
       </div>
     </main>

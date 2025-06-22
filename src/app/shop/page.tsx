@@ -1,3 +1,4 @@
+import { ProductsSort } from "@/wix-api/products";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import ProductResults from "./components/ProductResults";
@@ -10,6 +11,7 @@ interface PageProps {
     collection?: string[];
     price_min?: string;
     price_max?: string;
+    sort?: string;
   }>;
 }
 
@@ -30,6 +32,7 @@ export default async function Page({ searchParams }: PageProps) {
     page = "1",
     price_min,
     price_max,
+    sort,
   } = await searchParams;
   const title = q ? `Results for ${q}` : `Products`;
 
@@ -47,6 +50,7 @@ export default async function Page({ searchParams }: PageProps) {
           q={q}
           priceMin={price_min ? parseInt(price_min) : undefined}
           priceMax={price_max ? parseInt(price_max) : undefined}
+          sort={sort as ProductsSort}
         />
       </Suspense>
     </div>

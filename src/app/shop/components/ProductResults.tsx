@@ -1,7 +1,7 @@
 import PaginationBar from "@/components/paginationBar/PaginationBar";
 import Product from "@/components/products/Product";
 import { getWixServerClient } from "@/lib/wix-server.base";
-import { queryProducts } from "@/wix-api/products";
+import { ProductsSort, queryProducts } from "@/wix-api/products";
 import { notFound } from "next/navigation";
 
 interface ProductResultsProps {
@@ -10,6 +10,7 @@ interface ProductResultsProps {
   collectionIds?: string[];
   priceMin?: number;
   priceMax?: number;
+  sort?: ProductsSort;
 }
 
 export default async function ProductResults({
@@ -18,6 +19,7 @@ export default async function ProductResults({
   collectionIds,
   priceMin,
   priceMax,
+  sort,
 }: ProductResultsProps) {
   const pageSize = 12;
 
@@ -30,6 +32,7 @@ export default async function ProductResults({
     collectionIds,
     priceMin,
     priceMax,
+    sort,
   });
 
   if (page > (products.totalPages || 1)) {
