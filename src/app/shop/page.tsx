@@ -7,7 +7,9 @@ interface PageProps {
   searchParams: Promise<{
     q?: string;
     page?: string;
-    collection: string[];
+    collection?: string[];
+    price_min?: string;
+    price_max?: string;
   }>;
 }
 
@@ -22,7 +24,13 @@ export async function generateMetadata({
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  const { q, collection: collectionIds, page = "1" } = await searchParams;
+  const {
+    q,
+    collection: collectionIds,
+    page = "1",
+    price_min,
+    price_max,
+  } = await searchParams;
   const title = q ? `Results for ${q}` : `Products`;
 
   return (
@@ -37,6 +45,8 @@ export default async function Page({ searchParams }: PageProps) {
           collectionIds={collectionIds}
           page={parseInt(page)}
           q={q}
+          priceMin={price_min ? parseInt(price_min) : undefined}
+          priceMax={price_max ? parseInt(price_max) : undefined}
         />
       </Suspense>
     </div>

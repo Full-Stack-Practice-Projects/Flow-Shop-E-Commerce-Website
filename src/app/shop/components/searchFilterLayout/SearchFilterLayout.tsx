@@ -4,6 +4,7 @@ import { collections } from "@wix/stores";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useOptimistic, useTransition } from "react";
 import CollectionsFilter from "./components/CollectionsFilter";
+import PriceFilter from "./components/PriceFilter";
 
 interface SearchFilterLayoutProps {
   collections: collections.Collection[];
@@ -100,6 +101,16 @@ export default function SearchFilterLayout({
           updateCollectionIds={(collectionIds) =>
             updateFilters({
               collection: collectionIds,
+            })
+          }
+        />
+        <PriceFilter
+          minDefaultPrice={optimisticFilters.price_min || ""}
+          maxDefaultPrice={optimisticFilters.price_max || ""}
+          updatePriceRange={(priceMin, priceMax) =>
+            updateFilters({
+              price_min: priceMin,
+              price_max: priceMax,
             })
           }
         />

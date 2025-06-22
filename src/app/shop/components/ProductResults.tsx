@@ -8,12 +8,16 @@ interface ProductResultsProps {
   q?: string;
   page: number;
   collectionIds?: string[];
+  priceMin?: number;
+  priceMax?: number;
 }
 
 export default async function ProductResults({
   q,
   page,
   collectionIds,
+  priceMin,
+  priceMax,
 }: ProductResultsProps) {
   const pageSize = 12;
 
@@ -24,6 +28,8 @@ export default async function ProductResults({
     limit: pageSize,
     skip: (page - 1) * pageSize,
     collectionIds,
+    priceMin,
+    priceMax,
   });
 
   if (page > (products.totalPages || 1)) {

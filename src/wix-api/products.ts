@@ -7,6 +7,8 @@ interface QueryProductsFilters {
   q?: string;
   collectionIds?: string[] | string;
   sort?: ProductsSort;
+  priceMin?: number;
+  priceMax?: number;
   skip?: number;
   limit?: number;
 }
@@ -16,6 +18,8 @@ export async function queryProducts(
   {
     collectionIds,
     sort = "last_updated",
+    priceMin,
+    priceMax,
     skip,
     limit,
     q,
@@ -51,6 +55,14 @@ export async function queryProducts(
     case "last_updated":
       query = query.descending("lastUpdated");
       break;
+  }
+
+  if (priceMin) {
+    query = query.ge("priceData.price", priceMin);
+  }
+
+  if (priceMax) {
+    query = query.le("priceData.price", priceMax);
   }
 
   if (limit) {

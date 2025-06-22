@@ -58,6 +58,14 @@ export default function CollectionsFilter({
           );
         })}
       </ul>
+      {selectedCollectionIds.length > 0 && (
+        <button
+          onClick={() => updateCollectionIds([])}
+          className="text-sm text-primary hover:underline"
+        >
+          Clear
+        </button>
+      )}
     </div>
   );
 }
