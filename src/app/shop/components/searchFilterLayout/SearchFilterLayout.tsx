@@ -24,9 +24,11 @@ export default function SearchFilterLayout({
    * useOptimistic introduce in React 19.
    * I think using React query for this simple task is bit overkill.
    */
-  const [optimisticCollectionIds, setOptimisticCollectionIds] = useOptimistic(
-    searchParams.getAll("collection"),
-  );
+  const [optimisticFilters, setOptimisticFilters] = useOptimistic({
+    collection: searchParams.getAll("collection"),
+    price_min: searchParams.get("price_min") || undefined,
+    price_max: searchParams.get("price_max") || undefined,
+  });
 
   const [isPending, startTransition] = useTransition();
 
@@ -35,14 +37,32 @@ export default function SearchFilterLayout({
    * /shop?q=collection=value&collection=value2....
    */
 
-  function updateFilters(collectionIds: string[]) {
+  function updateFilters(updateFilters: Partial<typeof optimisticFilters>) {
+    const newOptimisticFilters = { ...optimisticFilters, ...updateFilters };
+
     /** We need to pass searchParams to URLSearchParams constructor so if we have a prevSearchParams and we wanna to append more params to it. */
     const newSearchParams = new URLSearchParams(searchParams);
-    /** We will update them with the new array. */
-    newSearchParams.delete("collection");
-    collectionIds.forEach((collectionId) => {
-      newSearchParams.append("collection", collectionId);
+
+    /**
+     * The Object.entries() method returns an array of the key/value pairs of an object.
+     * The Object.entries() method does not change the original object.
+     */
+    Object.entries(newOptimisticFilters).forEach(([key, value]) => {
+      /** Delete it to set a new value of it. */
+      newSearchParams.delete(key);
+
+      if (Array.isArray(value)) {
+        /** loop through collections values */
+        value.forEach((v) => newSearchParams.append(key, v));
+      } else if (value) {
+        /** Add the new value to the url */
+        newSearchParams.set(key, value);
+      }
     });
+
+    /** If we change the filters we usually want to start at page 1 */
+    newSearchParams.delete("page");
+
     /** ? to start search params otherwise it will not work */
 
     /**
@@ -63,7 +83,7 @@ export default function SearchFilterLayout({
        * React treats optimistic updates as transitions, meaning they should be scheduled with low priority.
        * useOptimistic updates must be inside startTransition so React can handle them as non-blocking, deferred updates and keep your UI responsive (non blocking)
        */
-      setOptimisticCollectionIds(collectionIds);
+      setOptimisticFilters(newOptimisticFilters);
       router.push(`?${newSearchParams.toString()}`);
     });
   }
@@ -76,8 +96,12 @@ export default function SearchFilterLayout({
       >
         <CollectionsFilter
           collections={collections}
-          selectedCollectionIds={optimisticCollectionIds}
-          updateCollectionIds={updateFilters}
+          selectedCollectionIds={optimisticFilters.collection}
+          updateCollectionIds={(collectionIds) =>
+            updateFilters({
+              collection: collectionIds,
+            })
+          }
         />
       </aside>
       <div className="w-full max-w-7xl space-y-5">
