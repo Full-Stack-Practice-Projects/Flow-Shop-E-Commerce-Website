@@ -10,6 +10,7 @@ import { getCollections } from "@/wix-api/collections";
 import { getLoggedInMemebers } from "@/wix-api/members";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import MobileMenu from "./components/MobileMenu";
 import ShoppingCartButton from "./components/ShoppingCartButton";
 
@@ -29,10 +30,12 @@ export default async function Navbar() {
   return (
     <header className="bg-background shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-5 p-5">
-        <MobileMenu
-          collections={collections}
-          loggedInMember={loggedInMemeber}
-        />
+        <Suspense>
+          <MobileMenu
+            collections={collections}
+            loggedInMember={loggedInMemeber}
+          />
+        </Suspense>
         <div className="flex flex-wrap items-center gap-5">
           <Link href="/" className="flex items-center gap-4">
             <Image src={logo} alt="Flow Shop logo" width={40} height={40} />
